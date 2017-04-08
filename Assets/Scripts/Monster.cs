@@ -18,4 +18,22 @@ public class Monster : MonoBehaviour {
 	void Update () {
 		transform.Translate(Vector3.up * Time.deltaTime * speed, Space.World);
 	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		Debug.Log ("collider: " + other.ToString ());
+		if (gameObject.tag == MobaManager.TAG_PLAYER) {
+			if (other.name == "EnemyCastle") {
+				Debug.Log ("Castle Dmg: " + attack);
+				MobaManager.instance.doDamageToEnemy (attack);
+				Destroy(gameObject);
+			}
+		}
+		else if (gameObject.tag == MobaManager.TAG_ENEMY) {
+			if (other.name == "PlayerCastle") {
+				Debug.Log ("Player Castle Dmg: " + attack);
+				MobaManager.instance.doDamageToPlayer (attack);
+				Destroy(gameObject);
+			}
+		}
+	}
 }
