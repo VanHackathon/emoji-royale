@@ -36,11 +36,17 @@ public class MobaManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+        InvokeRepeating("enemyAI", 0, 1);
+    }
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    public void enemyAI()
+    {
+        int rand = Random.Range(0, 3);
+        spawnEnemyMonster(rand);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -67,7 +73,10 @@ public class MobaManager : MonoBehaviour {
 		enemyMonster.transform.position = spawnAI.transform.position;
 		enemyMonster.tag = TAG_ENEMY;
 
-		int offset = Random.Range(-2, 2);
+        Monster mon = enemyMonster.GetComponent<Monster>();
+        mon.speed = mon.speed * (-1); // make enemy monster go down
+
+        int offset = Random.Range(-2, 2);
 		Vector3 pos = new Vector3(enemyMonster.transform.position.x + offset, enemyMonster.transform.position.y, enemyMonster.transform.position.z);
 		enemyMonster.transform.position = pos;
 	}
