@@ -17,9 +17,6 @@ public class MobaManager : MonoBehaviour {
 	public GameObject spawnAI;
 	public GameObject[] monsters;
 	private int power = 500;
-	private int timelimit = 5;
-	private int multiplier = 1;
-	private int counter = 0;
 	public int enemyPower = 350;
 	private int playerHealth = 1000;
 	private int enemyHealth = 1000;
@@ -46,28 +43,9 @@ public class MobaManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-        InvokeRepeating("enemyAI", 0, 1);
-        InvokeRepeating("enemyCash", 0, 1);
 		currentState = gameStatus.play;
     }
-
-    public void enemyAI()
-    {
-        int rand = Random.Range(0, 3);
-        spawnEnemyMonster(rand);
-    }
-
-    public void enemyCash()
-    {
-        if (counter > timelimit)
-        {
-            counter = 0;
-            multiplier++;
-        }
-        enemyPower = enemyPower + multiplier;
-        counter++;
-    }
-
+    
     // Update is called once per frame
     void Update () {
 		

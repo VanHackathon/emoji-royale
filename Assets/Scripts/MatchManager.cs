@@ -34,61 +34,67 @@ public class MatchManager : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
-            if (hit.collider == null)
-                return;
-            GameObject collidedGO = hit.collider.gameObject;
-            if (hit && collidedGO && collidedGO != smiley1 && collidedGO.tag == "Smiley")
+            if (hit)
             {
-                smiley2 = collidedGO;
-                smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
-                Vector2 tempPos = smiley1.transform.position;
-                // string tempName = smiley1.name;
-                smiley1.transform.position = smiley2.transform.position;
-                // smiley1.name = smiley2.name;
-                smiley2.transform.position = tempPos;
-                // smiley2.name = tempName;
+                if (hit.collider == null)
+                    return;
+                GameObject collidedGO = hit.collider.gameObject;
+                if (hit && collidedGO && collidedGO != smiley1 && collidedGO.tag == "Smiley")
+                {
+                    smiley2 = collidedGO;
+                    smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
+                    Vector2 tempPos = smiley1.transform.position;
+                    // string tempName = smiley1.name;
+                    smiley1.transform.position = smiley2.transform.position;
+                    // smiley1.name = smiley2.name;
+                    smiley2.transform.position = tempPos;
+                    // smiley2.name = tempName;
 
-                //finding which smileys[r, c] has smiley1 (and then smiley2) to change it in the matrix
-                //it's a terrible code, I know, but it was 2a.m. and I was really sleepy
-                int r1 = 0, c1 = 0;
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < columns; c++)
-                        if (smileys[r, c] != null && smileys[r, c].gameObject == smiley1)
-                        {
-                            r1 = r;
-                            c1 = c;
-                        }
+                    //finding which smileys[r, c] has smiley1 (and then smiley2) to change it in the matrix
+                    //it's a terrible code, I know, but it was 2a.m. and I was really sleepy
+                    int r1 = 0, c1 = 0;
+                    for (int r = 0; r < rows; r++)
+                        for (int c = 0; c < columns; c++)
+                            if (smileys[r, c] != null && smileys[r, c].gameObject == smiley1)
+                            {
+                                r1 = r;
+                                c1 = c;
+                            }
 
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < columns; c++)
-                        if (smileys[r, c] != null && smileys[r, c].gameObject == smiley2)
-                        {
-                            Smiley s = smileys[r1, c1];
-                            smileys[r1, c1] = smileys[r, c];
-                            smileys[r, c] = s;
-                        }
+                    for (int r = 0; r < rows; r++)
+                        for (int c = 0; c < columns; c++)
+                            if (smileys[r, c] != null && smileys[r, c].gameObject == smiley2)
+                            {
+                                Smiley s = smileys[r1, c1];
+                                smileys[r1, c1] = smileys[r, c];
+                                smileys[r, c] = s;
+                            }
 
 
-                smiley1 = null;
-                smiley2 = null;
+                    smiley1 = null;
+                    smiley2 = null;
 
-                CheckCollision();
-            }
-            else if (hit && hit.collider.gameObject)
-            {   //same smiley
-                smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
-                smiley1 = null;
+                    CheckCollision();
+                }
+                else if (hit && hit.collider.gameObject)
+                {   //same smiley
+                    smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
+                    smiley1 = null;
+                }
             }
         }
         else if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
-            GameObject collidedGO = hit.collider.gameObject;
-            if (hit && collidedGO && collidedGO.tag == "Smiley")
+            if (hit)
             {
-                smiley1 = hit.collider.gameObject;
-                smiley1.transform.localScale += new Vector3(expandSmiley, expandSmiley, 0);
+                GameObject collidedGO = hit.collider.gameObject;
+                if (collidedGO && collidedGO.tag == "Smiley")
+                {
+                    smiley1 = hit.collider.gameObject;
+                    smiley1.transform.localScale += new Vector3(expandSmiley, expandSmiley, 0);
+                }
             }
         }
     }
