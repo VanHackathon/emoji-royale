@@ -23,7 +23,10 @@ public class MobaManager : MonoBehaviour {
 	private GameObject enemyHpLbl;
 	private GameObject playerHpLbl;
 
-	public gameStatus currentState = gameStatus.play;
+    //public AudioClip explosionMoba;
+    //private AudioSource audioSource;
+
+    public gameStatus currentState = gameStatus.play;
 	public int monstersKilled = 0;
 
 	public float timer = 0;
@@ -45,7 +48,8 @@ public class MobaManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		currentState = gameStatus.play;
+        //audioSource = GetComponent<AudioSource>();
+        currentState = gameStatus.play;
     }
     
     // Update is called once per frame
