@@ -21,8 +21,8 @@ public class MatchManager : MonoBehaviour {
 	void Start () {
 		GenerateSmileysPool();
 		ShufflePool();
-
 		FillMap();
+		CheckCollision();
 	}
 	
 	// Update is called once per frame
@@ -31,10 +31,41 @@ public class MatchManager : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
 			GameObject collidedGO = hit.collider.gameObject;
-			if (hit && collidedGO != smiley1){
+			if (hit && collidedGO && collidedGO.gameObject.activeSelf && collidedGO != smiley1){
 				smiley2 = collidedGO;
+				smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
+				Vector2 tempPos = smiley1.transform.position;
+				// string tempName = smiley1.name;
+				smiley1.transform.position = smiley2.transform.position;
+				// smiley1.name = smiley2.name;
+				smiley2.transform.position = tempPos;
+				// smiley2.name = tempName;
+
+				//finding which smileys[r, c] has smiley1 (and then smiley2) to change it in the matrix
+				//it's a terrible code, I know, but it was 2a.m. and I was really sleepy
+				int r1 = 0, c1 = 0;
+				for (int r = 0; r < rows; r++)
+					for (int c = 0; c < columns; c++)
+						if (smileys[r, c].gameObject == smiley1){
+							r1 = r;
+							c1 = c;
+						}
+
+				for (int r = 0; r < rows; r++)
+					for (int c = 0; c < columns; c++)
+						if (smileys[r, c].gameObject == smiley2){
+							Smiley s = smileys[r1, c1];
+							smileys[r1, c1] = smileys[r, c];
+							smileys[r, c] = s;
+						}
+				
+
+				smiley1 = null;
+				smiley2 = null;
+
+				CheckCollision();
 			}
-			else if (hit){	//same smiley
+			else if (hit && hit.collider.gameObject.activeSelf){	//same smiley
 				smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
 				smiley1 = null;
 			}
@@ -42,18 +73,10 @@ public class MatchManager : MonoBehaviour {
 		else if (Input.GetMouseButtonDown(0)){
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
-			if (hit){
+			if (hit && hit.collider.gameObject.activeSelf){
 				smiley1 = hit.collider.gameObject;
 				smiley1.transform.localScale += new Vector3(expandSmiley, expandSmiley, 0);
 			}
-		}
-		if (smiley1 && smiley2){
-			smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
-			Vector2 tempPos = smiley1.transform.position;
-			smiley1.transform.position = smiley2.transform.position;
-			smiley2.transform.position = tempPos;
-			smiley1 = null;
-			smiley2 = null;
 		}
 	}
 
@@ -95,6 +118,44 @@ public class MatchManager : MonoBehaviour {
 			GameObject val = smileyPool[n];
 			smileyPool[n] = smileyPool[r];
 			smileyPool[r] = val;
+		}
+	}
+
+	void CheckCollision(){
+		//checking rows
+		for (int r = 0; r < rows; r++){
+			int counter = 1;
+			for (int c = 1; c < columns; c++){
+				Smiley s1 = smileys[r, c], s2 = smileys[r, c-1]; 
+				if (s1 != null && s2 != null && s1.gameObject.activeSelf && s2.gameObject.activeSelf && s1.name == s2.name)
+					counter++;
+				else
+					counter = 1;
+
+				if (counter >= 3){
+					s1.gameObject.SetActive(false);
+					s2.gameObject.SetActive(false);
+					smileys[r, c-2].gameObject.SetActive(false);
+				}
+			}
+		}
+
+		//checking columns
+		for (int c = 0; c < columns; c++){
+			int counter = 1;
+			for (int r = 1; r < rows; r++){
+				Smiley s1 = smileys[r, c], s2 = smileys[r-1, c]; 
+				if (s1 != null && s2 != null && s1.name == s2.name)
+					counter++;
+				else
+					counter = 1;
+
+				if (counter >= 3){
+					s1.gameObject.SetActive(false);
+					s2.gameObject.SetActive(false);
+					smileys[r-2, c].gameObject.SetActive(false);
+				}
+			}
 		}
 	}
 }

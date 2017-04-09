@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Smiley : MonoBehaviour {
+public class Smiley{
 
-	// private GameObject gameObject;
-	// private string name;
+	public GameObject gameObject;
+	public string name;
 
 	public Smiley(GameObject go, string name){
-		// gameObject = go;
-		// this.name = name;
+		gameObject = go;
+		this.name = name;
 	}
 }
