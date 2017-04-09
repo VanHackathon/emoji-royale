@@ -11,7 +11,7 @@ public class AIManager : MonoBehaviour{
     // Use this for initialization
     void Start()
     {
-        moba = FindObjectOfType(typeof(MobaManager)) as MobaManager;
+		moba = MobaManager.instance;//FindObjectOfType(typeof(MobaManager)) as MobaManager;
         InvokeRepeating("enemyAI", 0, 1);
         InvokeRepeating("enemyCash", 0, 1);
     }
