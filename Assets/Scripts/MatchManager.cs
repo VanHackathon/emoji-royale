@@ -224,7 +224,7 @@ public class MatchManager : MonoBehaviour
                 }
 
 		if (hasCollision)
-            MoveSmileys();
+            Invoke("MoveSmileys", 0.5f);
     }
 
 	//counting twice when hiting 4 blocks, but still make a good score
