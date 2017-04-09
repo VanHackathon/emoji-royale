@@ -29,6 +29,7 @@ public class Monster : MonoBehaviour {
 		Debug.Log ("collider: " + other.ToString ());
 		if (gameObject.tag == MobaManager.TAG_PLAYER) {
             if (other.name == "EnemyCastle") {
+                audioSource.PlayOneShot(sfxExplosion);
                 Debug.Log ("Castle Dmg: " + attack);
 				MobaManager.instance.doDamageToEnemy (attack);
 				ParticleSystem localPS = Instantiate (ps);
@@ -44,7 +45,6 @@ public class Monster : MonoBehaviour {
 				Destroy(other.gameObject);
 				Destroy(gameObject);
             }
-            audioSource.PlayOneShot(sfxExplosion);
 
         }
 		else if (gameObject.tag == MobaManager.TAG_ENEMY) {
