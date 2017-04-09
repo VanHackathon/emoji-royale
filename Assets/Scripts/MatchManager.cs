@@ -10,7 +10,7 @@ public class MatchManager : MonoBehaviour {
 	public GameObject[] smileyPrefabs;
 	List<GameObject> smileyPool = new List<GameObject>();
 	static int rows = 6;
-	static int columns = 5;
+	static int columns = 6;
 	[SerializeField]
 	float gap;
 	private float expandSmiley = 0.2f;
@@ -182,7 +182,7 @@ public class MatchManager : MonoBehaviour {
 
 		// for (int r = 0; r < rows; r++)
 		// 	for (int c = 0 ; c < columns; c++)
-		// 		if (smileys[r, c] == null){
+		// 		if (smileys[c, r] == null){
 		// 			Vector2 smileyPos = new Vector2(r + gap + r * gap, c + gap + c * gap);
 		// 			for (int n = 0; n < smileyPool.Count; n++){
 		// 				GameObject o = smileyPool[n];
@@ -194,31 +194,31 @@ public class MatchManager : MonoBehaviour {
 		// 			}
 		// 		}
 
-		FillMap();
+		// FillMap();
 
-		// for (int r = 1; r < rows; r++)
-		// 	for (int c = 0; c < columns; c++){
-		// 		if (r == rows - 1 && smileys[r, c] == null){
-		// 			Vector2 smileyPos = new Vector2(r + gap + r * gap, c + gap + c * gap);
-		// 			for (int n = 0; n < smileyPool.Count; n++){
-		// 				GameObject o = smileyPool[n];
-		// 				if (!o.activeSelf){
-		// 					o.transform.position = smileyPos;
-		// 					o.SetActive(true);
-		// 					smileys[r, c] = new Smiley(o, o.name);
-		// 					break;
-		// 				}
-		// 			}
-		// 		}
-		// 		if (smileys[r, c] != null){
-		// 			smileys[r-1, c] = smileys[r, c];
-		// 			smileys[r-1, c].gameObject.transform.position = new Vector3(r + gap + r * gap, c + gap + c * gap, 0);
-		// 			smileys[r, c] = null;
-		// 			anyMoved = true;
-		// 		}
-		// 	}
+		for (int r = 1; r < rows; r++)
+			for (int c = 0; c < columns; c++){
+				if (r == rows - 1 && smileys[c, r] == null){
+					Vector2 smileyPos = new Vector2(c + gap + c * gap, r + gap + r * gap);
+					for (int n = 0; n < smileyPool.Count; n++){
+						GameObject o = smileyPool[n];
+						if (!o.activeSelf){
+							o.transform.position = smileyPos;
+							o.SetActive(true);
+							smileys[c, r] = new Smiley(o, o.name);
+							break;
+						}
+					}
+				}
+				if (smileys[c, r] != null && smileys[c, r-1] == null){
+					smileys[c, r-1] = smileys[c, r];
+					smileys[c, r-1].gameObject.transform.position = new Vector3(c + gap + c * gap, r-1 + gap + (r-1) * gap, 0);
+					smileys[c, r] = null;
+					anyMoved = true;
+				}
+			}
 		
-		// if (anyMoved)
-			// Invoke("MoveSmileys", 0.5f);
+		if (anyMoved)
+			Invoke("MoveSmileys", 0.5f);
 	}
 }
