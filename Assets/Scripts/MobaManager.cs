@@ -34,7 +34,7 @@ public class MobaManager : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 		powerLbl.text = power.ToString ();
 		enemyHpLbl.text = enemyHealth.ToString ();
-		playerHpLbl.text = playerHpLbl.ToString ();
+		playerHpLbl.text = playerHealth.ToString ();
 	}
 	// Use this for initialization
 	void Start () {

@@ -9,6 +9,8 @@ public class Monster : MonoBehaviour {
 	public int speed = 10;
 	public int powerCost = 20;
 
+	public ParticleSystem ps;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -25,9 +27,16 @@ public class Monster : MonoBehaviour {
 			if (other.name == "EnemyCastle") {
 				Debug.Log ("Castle Dmg: " + attack);
 				MobaManager.instance.doDamageToEnemy (attack);
+				ParticleSystem localPS = Instantiate (ps);
+				localPS.transform.position = gameObject.transform.position;
+
 				Destroy(gameObject);
+
 			}
 			if (other.tag == MobaManager.TAG_ENEMY) {
+				ParticleSystem localPS = Instantiate (ps);
+				localPS.transform.position = gameObject.transform.position;
+
 				Destroy(other.gameObject);
 				Destroy(gameObject);
 			}
@@ -36,10 +45,18 @@ public class Monster : MonoBehaviour {
 		else if (gameObject.tag == MobaManager.TAG_ENEMY) {
 			if (other.name == "PlayerCastle") {
 				Debug.Log ("Player Castle Dmg: " + attack);
+				Debug.Log ("monster position =" + gameObject.transform.position);
 				MobaManager.instance.doDamageToPlayer (attack);
+				ParticleSystem localPS = Instantiate (ps);
+				localPS.transform.position = gameObject.transform.position;
+				Debug.Log ("particle position =" + localPS.transform.position);
+
 				Destroy(gameObject);
 			}
 			if (other.tag == MobaManager.TAG_PLAYER) {
+				ParticleSystem localPS = Instantiate (ps);
+				localPS.transform.position = gameObject.transform.position;
+
 				Destroy(other.gameObject);
 				Destroy(gameObject);
 			}
