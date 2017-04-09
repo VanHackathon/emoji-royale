@@ -17,14 +17,17 @@ public class MobaManager : MonoBehaviour {
 	public GameObject spawnAI;
 	public GameObject[] monsters;
 	private int power = 500;
-    public int enemyPower = 350;
-    private int playerHealth = 1000;
-	private int enemyHealth = 400;
-	public Text powerLbl;
-	public Text enemyHpLbl;
-	public Text playerHpLbl;
+	private int timelimit = 5;
+	private int multiplier = 1;
+	private int counter = 0;
+	public int enemyPower = 350;
+	private int playerHealth = 1000;
+	private int enemyHealth = 1000;
+	private GameObject powerLbl;
+	private GameObject enemyHpLbl;
+	private GameObject playerHpLbl;
 
-	private gameStatus currentState = gameStatus.play;
+	public gameStatus currentState = gameStatus.play;
 
 
 	void Awake(){
@@ -32,14 +35,37 @@ public class MobaManager : MonoBehaviour {
 			instance = this;
 		else if (instance != this)
 			Destroy(gameObject);
-		DontDestroyOnLoad(gameObject);
-		powerLbl.text = power.ToString ();
-		enemyHpLbl.text = enemyHealth.ToString ();
-		playerHpLbl.text = playerHealth.ToString ();
+		//DontDestroyOnLoad(gameObject);
+		powerLbl = GameObject.Find("PowerValue");
+		enemyHpLbl = GameObject.Find("EnemyHPValue");
+		playerHpLbl = GameObject.Find("PlayerHPValue");
+
+		powerLbl.GetComponent<Text>().text = power.ToString ();
+		enemyHpLbl.GetComponent<Text>().text = enemyHealth.ToString ();
+		playerHpLbl.GetComponent<Text>().text = playerHealth.ToString ();
 	}
 	// Use this for initialization
 	void Start () {
+        InvokeRepeating("enemyAI", 0, 1);
+        InvokeRepeating("enemyCash", 0, 1);
+		currentState = gameStatus.play;
+    }
 
+    public void enemyAI()
+    {
+        int rand = Random.Range(0, 3);
+        spawnEnemyMonster(rand);
+    }
+
+    public void enemyCash()
+    {
+        if (counter > timelimit)
+        {
+            counter = 0;
+            multiplier++;
+        }
+        enemyPower = enemyPower + multiplier;
+        counter++;
     }
 
     // Update is called once per frame
@@ -88,35 +114,47 @@ public class MobaManager : MonoBehaviour {
 	public void addPower(int amount)
 	{
 		power = power + amount;
-		powerLbl.text = power.ToString ();
+		powerLbl.GetComponent<Text>().text = power.ToString ();
 	}
 
 	public void usePower(int amount)
 	{
 		power = power - amount;
-		powerLbl.text = power.ToString ();
+		powerLbl.GetComponent<Text>().text = power.ToString ();
 	}
 
 	public void doDamageToPlayer(int damage)
 	{
 		playerHealth = playerHealth - damage;
-		playerHpLbl.text = playerHealth.ToString ();
+		playerHpLbl.GetComponent<Text>().text = playerHealth.ToString ();
 		Debug.Log ("playerHealth:" + playerHealth);
 		if (playerHealth <= 0) {
 			Debug.Log ("Game Over - You Lost");
 			currentState = gameStatus.gameover;
+			updateGameStatus ();
+			Application.LoadLevel ("EndGame");
 		}
 	}
 
 	public void doDamageToEnemy(int damage)
 	{
 		enemyHealth = enemyHealth - damage;
-		enemyHpLbl.text = enemyHealth.ToString ();
+		enemyHpLbl.GetComponent<Text>().text = enemyHealth.ToString ();
 		Debug.Log ("enemyHealth:" + enemyHealth);
 		if (enemyHealth <= 0) {
 			Debug.Log ("Game Over - You WIN");
-			currentState = gameStatus.gameover;
+			currentState = gameStatus.win;
+			updateGameStatus ();
+			Application.LoadLevel ("EndGame");
 		}
+	}
+
+	public void updateGameStatus()
+	{
+		GameStats.instance.result = currentState;
+		//GameStats.instance.monstersKilled = 0;
+		//GameStats.instance.timePlayedInSec = 0;
+		//GameStats.instance.totalPower = 0;
 	}
 
 }
