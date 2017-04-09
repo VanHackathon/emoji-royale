@@ -198,6 +198,12 @@ public class MatchManager : MonoBehaviour {
 
 		for (int r = 1; r < rows; r++)
 			for (int c = 0; c < columns; c++){
+				if (smileys[c, r] != null && smileys[c, r-1] == null){
+					smileys[c, r-1] = smileys[c, r];
+					smileys[c, r-1].gameObject.transform.position = new Vector3(c + gap + c * gap, r-1 + gap + (r-1) * gap, 0);
+					smileys[c, r] = null;
+					anyMoved = true;
+				}
 				if (r == rows - 1 && smileys[c, r] == null){
 					Vector2 smileyPos = new Vector2(c + gap + c * gap, r + gap + r * gap);
 					for (int n = 0; n < smileyPool.Count; n++){
@@ -210,15 +216,11 @@ public class MatchManager : MonoBehaviour {
 						}
 					}
 				}
-				if (smileys[c, r] != null && smileys[c, r-1] == null){
-					smileys[c, r-1] = smileys[c, r];
-					smileys[c, r-1].gameObject.transform.position = new Vector3(c + gap + c * gap, r-1 + gap + (r-1) * gap, 0);
-					smileys[c, r] = null;
-					anyMoved = true;
-				}
 			}
 		
 		if (anyMoved)
 			Invoke("MoveSmileys", 0.5f);
+		else
+			CheckCollision();
 	}
 }
