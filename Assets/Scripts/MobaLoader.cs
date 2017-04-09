@@ -6,11 +6,14 @@ public class MobaLoader : MonoBehaviour {
 
 	public GameObject mobaManager;
 
-	void Awake()
+    //[SerializeField] private AudioClip explosionMoba;
+
+    void Awake()
 	{
 		if (MobaManager.instance == null) {
-			Instantiate (mobaManager);
-		}
+            Instantiate (mobaManager);
+            //MobaManager.instance.explosionMoba = explosionMoba;
+        }
 	}
 
 }

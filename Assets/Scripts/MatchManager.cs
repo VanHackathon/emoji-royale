@@ -237,9 +237,6 @@ public class MatchManager : MonoBehaviour
 	//counting twice when hiting 4 blocks, but still make a good score
 	void UpdatePower (int counter)
 	{
-        Debug.Log("mylog ->\n");
-        Debug.Log(sfxMatch);
-        Debug.Log(audioSource);
         audioSource.PlayOneShot(sfxMatch);
         //audioSource.Play();
         if (gameRunning){
