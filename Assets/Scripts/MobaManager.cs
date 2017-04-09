@@ -17,6 +17,10 @@ public class MobaManager : MonoBehaviour {
 	public GameObject spawnAI;
 	public GameObject[] monsters;
 	private int power = 500;
+	private int timelimit = 5;
+	private int multiplier = 1;
+	private int counter = 0;
+	private int enemyPower = 350;
 	private int playerHealth = 1000;
 	private int enemyHealth = 400;
 	public Text powerLbl;
@@ -39,12 +43,24 @@ public class MobaManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("enemyAI", 0, 1);
+        InvokeRepeating("enemyCash", 0, 1);
     }
 
     public void enemyAI()
     {
         int rand = Random.Range(0, 3);
         spawnEnemyMonster(rand);
+    }
+
+    public void enemyCash()
+    {
+        if (counter > timelimit)
+        {
+            counter = 0;
+            multiplier++;
+        }
+        enemyPower = enemyPower + multiplier;
+        counter++;
     }
 
     // Update is called once per frame
@@ -70,18 +86,25 @@ public class MobaManager : MonoBehaviour {
 	}
 
 	public void spawnEnemyMonster(int index)
-	{
-		GameObject enemyMonster = Instantiate (monsters [index]) as GameObject;
-		enemyMonster.transform.position = spawnAI.transform.position;
-		enemyMonster.tag = TAG_ENEMY;
-
+    {
+        GameObject enemyMonster = Instantiate(monsters[index]) as GameObject;
         Monster mon = enemyMonster.GetComponent<Monster>();
-        mon.speed = mon.speed * (-1); // make enemy monster go down
+        int cost = mon.powerCost;
+        if (cost <= enemyPower) {
+            enemyPower = enemyPower - cost;
+            enemyMonster.transform.position = spawnAI.transform.position;
+            enemyMonster.tag = TAG_ENEMY;
+            mon.speed = mon.speed * (-1); // make enemy monster go down
 
-        int offset = Random.Range(-2, 2);
-		Vector3 pos = new Vector3(enemyMonster.transform.position.x + offset, enemyMonster.transform.position.y, enemyMonster.transform.position.z);
-		enemyMonster.transform.position = pos;
-	}
+            int offset = Random.Range(-2, 2);
+            Vector3 pos = new Vector3(enemyMonster.transform.position.x + offset, enemyMonster.transform.position.y, enemyMonster.transform.position.z);
+            enemyMonster.transform.position = pos;
+        }
+        else {
+            Destroy(enemyMonster);
+        }
+
+    }
 
 	public void addPower(int amount)
 	{
