@@ -85,18 +85,19 @@ public class MatchManager : MonoBehaviour {
 	// Fills map with jewels
 	void FillMap() {
 		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < columns; j++){
-				Vector2 smileyPos = new Vector2(i + gap + i * gap, j + gap + j * gap);
-				for (int x = 0; x < smileyPool.Count; x++){
-					GameObject o = smileyPool[x];
-					if (!o.activeSelf){
-						o.transform.position = smileyPos;
-						o.SetActive(true);
-						smileys[i, j] = new Smiley(o, o.name);
-						break;
+			for (int j = 0; j < columns; j++)
+				if (smileys[i, j] == null){
+					Vector2 smileyPos = new Vector2(i + gap + i * gap, j + gap + j * gap);
+					for (int x = 0; x < smileyPool.Count; x++){
+						GameObject o = smileyPool[x];
+						if (!o.activeSelf){
+							o.transform.position = smileyPos;
+							o.SetActive(true);
+							smileys[i, j] = new Smiley(o, o.name);
+							break;
+						}
 					}
 				}
-			}
 	}
 
 	void GenerateSmileysPool(){
@@ -171,36 +172,53 @@ public class MatchManager : MonoBehaviour {
 					smileys[r, c] = null;
 				}
 
-		// if (hasCollision)
-			// MoveSmileys();
+		if (hasCollision)
+			MoveSmileys();
 	}
 
 	void MoveSmileys(){
 		bool anyMoved = false;
 		ShufflePool();
-		for (int r = 1; r < rows; r++)
-			for (int c = 0; c < columns; c++){
-				if (r == rows - 1 && smileys[r, c] == null){
-					Vector2 smileyPos = new Vector2(r, c);
-					for (int n = 0; n < smileyPool.Count; n++){
-						GameObject o = smileyPool[n];
-						if (!o.activeSelf){
-							o.transform.position = smileyPos;
-							o.SetActive(true);
-							smileys[r, c] = new Smiley(o, o.name);
-							break;
-						}
-					}
-				}
-				if (smileys[r, c] != null){
-					smileys[r, c-1] = smileys[r, c];
-					smileys[r, c-1].gameObject.transform.position = new Vector3(r, c-1, 0);
-					smileys[c, r] = null;
-					anyMoved = true;
-				}
-			}
+
+		// for (int r = 0; r < rows; r++)
+		// 	for (int c = 0 ; c < columns; c++)
+		// 		if (smileys[r, c] == null){
+		// 			Vector2 smileyPos = new Vector2(r + gap + r * gap, c + gap + c * gap);
+		// 			for (int n = 0; n < smileyPool.Count; n++){
+		// 				GameObject o = smileyPool[n];
+		// 				if (!o.activeSelf){
+		// 					o.transform.position = smileyPos;
+		// 					o.SetActive(true);
+		// 					smileys[r, c] = new Smiley(o, o.name);
+		// 				}
+		// 			}
+		// 		}
+
+		FillMap();
+
+		// for (int r = 1; r < rows; r++)
+		// 	for (int c = 0; c < columns; c++){
+		// 		if (r == rows - 1 && smileys[r, c] == null){
+		// 			Vector2 smileyPos = new Vector2(r + gap + r * gap, c + gap + c * gap);
+		// 			for (int n = 0; n < smileyPool.Count; n++){
+		// 				GameObject o = smileyPool[n];
+		// 				if (!o.activeSelf){
+		// 					o.transform.position = smileyPos;
+		// 					o.SetActive(true);
+		// 					smileys[r, c] = new Smiley(o, o.name);
+		// 					break;
+		// 				}
+		// 			}
+		// 		}
+		// 		if (smileys[r, c] != null){
+		// 			smileys[r-1, c] = smileys[r, c];
+		// 			smileys[r-1, c].gameObject.transform.position = new Vector3(r + gap + r * gap, c + gap + c * gap, 0);
+		// 			smileys[r, c] = null;
+		// 			anyMoved = true;
+		// 		}
+		// 	}
 		
-		if (anyMoved)
-			Invoke("MoveSmileys", 0.5f);
+		// if (anyMoved)
+			// Invoke("MoveSmileys", 0.5f);
 	}
 }
