@@ -11,13 +11,9 @@ public class Monster : MonoBehaviour {
 
 	public ParticleSystem ps;
 
-    [SerializeField]
-    private AudioClip sfxExplosion;
-    private AudioSource audioSource;
-
     // Use this for initialization
     void Start () {
-        audioSource = GetComponent<AudioSource>();
+        
     }
 	
 	// Update is called once per frame
@@ -26,21 +22,20 @@ public class Monster : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		Debug.Log ("collider: " + other.ToString ());
+        Debug.Log ("collider: " + other.ToString ());
 		if (gameObject.tag == MobaManager.TAG_PLAYER) {
             if (other.name == "EnemyCastle") {
-                audioSource.PlayOneShot(sfxExplosion);
                 Debug.Log ("Castle Dmg: " + attack);
 				MobaManager.instance.doDamageToEnemy (attack);
 				ParticleSystem localPS = Instantiate (ps);
-				localPS.transform.position = gameObject.transform.position;
+                localPS.transform.position = gameObject.transform.position;
 
 				Destroy(gameObject);
             }
 			if (other.tag == MobaManager.TAG_ENEMY) {
                 MobaManager.instance.addMonsterKilled ();
 				ParticleSystem localPS = Instantiate (ps);
-				localPS.transform.position = gameObject.transform.position;
+                localPS.transform.position = gameObject.transform.position;
 
 				Destroy(other.gameObject);
 				Destroy(gameObject);
@@ -53,14 +48,14 @@ public class Monster : MonoBehaviour {
 				Debug.Log ("monster position =" + gameObject.transform.position);
 				MobaManager.instance.doDamageToPlayer (attack);
 				ParticleSystem localPS = Instantiate (ps);
-				localPS.transform.position = gameObject.transform.position;
+                localPS.transform.position = gameObject.transform.position;
 				Debug.Log ("particle position =" + localPS.transform.position);
 
 				Destroy(gameObject);
 			}
 			if (other.tag == MobaManager.TAG_PLAYER) {
                 ParticleSystem localPS = Instantiate (ps);
-				localPS.transform.position = gameObject.transform.position;
+                localPS.transform.position = gameObject.transform.position;
 
 				Destroy(other.gameObject);
 				Destroy(gameObject);
