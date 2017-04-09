@@ -34,6 +34,7 @@ public class Monster : MonoBehaviour {
 
 			}
 			if (other.tag == MobaManager.TAG_ENEMY) {
+				MobaManager.instance.addMonsterKilled ();
 				ParticleSystem localPS = Instantiate (ps);
 				localPS.transform.position = gameObject.transform.position;
 
