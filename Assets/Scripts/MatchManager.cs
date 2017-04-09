@@ -30,6 +30,8 @@ public class MatchManager : MonoBehaviour {
 		if (smiley1 && Input.GetMouseButtonDown(0)){
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
+			if (hit.collider == null)
+				return;
 			GameObject collidedGO = hit.collider.gameObject;
 			if (hit && collidedGO && collidedGO != smiley1){
 				smiley2 = collidedGO;
@@ -164,7 +166,7 @@ public class MatchManager : MonoBehaviour {
 		//moving all non active smileys to the puta que pariu
 		for (int r = 0; r < rows; r++)
 			for (int c = 0; c < columns; c++)
-				if (!smileys[r, c].gameObject.activeSelf){
+				if (smileys[r, c] != null && !smileys[r, c].gameObject.activeSelf){
 					smileys[r, c].gameObject.transform.position = new Vector3(-10, -10, 0);
 					smileys[r, c] = null;
 				}
