@@ -18,7 +18,7 @@ public class AIManager : MonoBehaviour{
 
     public void enemyAI()
     {
-        int rand = Random.Range(0, 3);
+        int rand = Random.Range(3, 6);
         moba.spawnEnemyMonster(rand);
     }
 
