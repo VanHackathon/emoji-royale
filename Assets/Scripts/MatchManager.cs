@@ -12,6 +12,7 @@ public class MatchManager : MonoBehaviour
     List<GameObject> smileyPool = new List<GameObject>();
     static int rows = 5;
     static int columns = 5;
+    static bool gameRunning = false;
     [SerializeField]
     float gap;
     private float expandSmiley = 0.2f;
@@ -23,11 +24,13 @@ public class MatchManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        gameRunning = false;
 		mm = MobaManager.instance;
         GenerateSmileysPool();
         ShufflePool();
         FillMap();
         CheckCollision();
+        gameRunning = true;
     }
 
     // Update is called once per frame
@@ -230,8 +233,10 @@ public class MatchManager : MonoBehaviour
 	//counting twice when hiting 4 blocks, but still make a good score
 	void UpdatePower (int counter)
 	{
-		Debug.Log ("Counter:" + counter);
-		mm.addPower (20 * counter);
+        if (gameRunning){
+            Debug.Log ("Counter:" + counter);
+            mm.addPower (20 * counter);
+        }
 	}
 
 	void MoveSmileys(){
