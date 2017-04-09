@@ -9,7 +9,7 @@ public class MatchManager : MonoBehaviour {
 	GameObject smiley2 = null;
 	public GameObject[] smileyPrefabs;
 	List<GameObject> smileyPool = new List<GameObject>();
-	static int rows = 6;
+	static int rows = 5;
 	static int columns = 5;
 	[SerializeField]
 	float gap;
@@ -87,7 +87,7 @@ public class MatchManager : MonoBehaviour {
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++)
 				if (smileys[i, j] == null){
-					Vector2 smileyPos = new Vector2(i + gap + i * gap, j + gap + j * gap);
+					Vector2 smileyPos = new Vector2(1 + i + gap + i * gap, j + gap + j * gap);
 					for (int x = 0; x < smileyPool.Count; x++){
 						GameObject o = smileyPool[x];
 						if (!o.activeSelf){
