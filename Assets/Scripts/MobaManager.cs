@@ -20,9 +20,9 @@ public class MobaManager : MonoBehaviour {
 	private int timelimit = 5;
 	private int multiplier = 1;
 	private int counter = 0;
-	private int enemyPower = 350;
-	private int playerHealth = 100;
-	private int enemyHealth = 100;
+	public int enemyPower = 350;
+	private int playerHealth = 1000;
+	private int enemyHealth = 1000;
 	private GameObject powerLbl;
 	private GameObject enemyHpLbl;
 	private GameObject playerHpLbl;
