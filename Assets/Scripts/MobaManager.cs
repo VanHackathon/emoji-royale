@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -123,6 +122,7 @@ public class MobaManager : MonoBehaviour {
 			Debug.Log ("Game Over - You WIN");
 			currentState = gameStatus.win;
 			updateGameStatus ();
+			
 			Application.LoadLevel ("EndGame");
 		}
 	}
