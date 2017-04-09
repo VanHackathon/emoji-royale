@@ -24,6 +24,10 @@ public class MatchManager : MonoBehaviour
 
 	private MobaManager mm;
 
+	public GameObject canvas;
+
+	public Vector2 lastClick;
+
     // Use this for initialization
     void Start()
     {
@@ -44,6 +48,8 @@ public class MatchManager : MonoBehaviour
         {
             //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			lastClick = Input.mousePosition;
 			//Debug.DrawRay (ray.origin, ray.direction, Color.green);
             //RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
 			RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
@@ -101,10 +107,16 @@ public class MatchManager : MonoBehaviour
         {
 			//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			lastClick = Input.mousePosition;
 			//Debug.DrawRay (ray.origin, ray.direction, Color.green);
 			//RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
 			RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-			Debug.Log ("Worldpoint:" + worldPoint);
+//			canvas.GetComponent<HintCreator> ().createText ("HUEHUEHUEHUE", Color.blue, Input.mousePosition);
+//			Debug.Log ("Worldpoint:" + worldPoint);
+//			Debug.Log ("Viewport:" + Camera.main.ScreenToViewportPoint(Input.mousePosition));
+//			Debug.Log ("MousePosition:" + Input.mousePosition);
+//			Debug.Log ("Raypos:" + Camera.main.ScreenPointToRay(Input.mousePosition));
+//				Debug.Log ("WorldtoScreenpoint:" + Camera.main.WorldToScreenPoint(worldPoint));
             if (hit)
             {
                 GameObject collidedGO = hit.collider.gameObject;
@@ -190,6 +202,7 @@ public class MatchManager : MonoBehaviour
                     s2.gameObject.SetActive(false);
                     smileys[r, c - 2].gameObject.SetActive(false);
 					UpdatePower (counter);
+
                 }
             }
 
@@ -241,7 +254,9 @@ public class MatchManager : MonoBehaviour
         //audioSource.Play();
         if (gameRunning){
             Debug.Log ("Counter:" + counter);
-            mm.addPower (20 * counter);
+			int powerToAdd = 20 * counter;
+			mm.addPower (powerToAdd);
+			canvas.GetComponent<HintCreator> ().createText ("+"+powerToAdd.ToString(), Color.blue, lastClick);
         }
 	}
 

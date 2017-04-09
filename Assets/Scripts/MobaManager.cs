@@ -15,10 +15,10 @@ public class MobaManager : MonoBehaviour {
 	public GameObject spawnPlayer;
 	public GameObject spawnAI;
 	public GameObject[] monsters;
-	private int power = 500;
+	private int power = 50;
 	public int enemyPower = 350;
-	private int playerHealth = 100;
-	private int enemyHealth = 100;
+	private int playerHealth = 1000;
+	private int enemyHealth = 1000;
 	private GameObject powerLbl;
 	private GameObject enemyHpLbl;
 	private GameObject playerHpLbl;
@@ -31,6 +31,7 @@ public class MobaManager : MonoBehaviour {
 
 	public float timer = 0;
 	public int totalPower = 0;
+
 
 	void Awake(){
 		if (instance == null)
@@ -55,6 +56,8 @@ public class MobaManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		timer += Time.deltaTime;
+
+		//createText("teste", Color.black, Vector2.zero);
 	}
 
 	public void spawnPlayerMonster(int index)
@@ -148,5 +151,13 @@ public class MobaManager : MonoBehaviour {
 		GameStats.instance.timePlayedInSec = (int) timer;
 		GameStats.instance.totalPower = totalPower;
 	}
+
+//	public void createText(string text, Color color, Vector2 pos)
+//	{
+//		Text textBox = Instantiate(hint);
+//		textBox.text = text;
+//		textBox.color = color;
+//		textBox.transform.position = pos;
+//	}
 
 }
