@@ -9,8 +9,8 @@ public class MatchManager : MonoBehaviour {
 	GameObject smiley2 = null;
 	public GameObject[] smileyPrefabs;
 	List<GameObject> smileyPool = new List<GameObject>();
-	static int rows = 6;
-	static int columns = 6;
+	static int rows = 5;
+	static int columns = 5;
 	[SerializeField]
 	float gap;
 	private float expandSmiley = 0.2f;
@@ -205,6 +205,7 @@ public class MatchManager : MonoBehaviour {
 					anyMoved = true;
 				}
 				if (r == rows - 1 && smileys[c, r] == null){
+					anyMoved = true;
 					Vector2 smileyPos = new Vector2(c + gap + c * gap, r + gap + r * gap);
 					for (int n = 0; n < smileyPool.Count; n++){
 						GameObject o = smileyPool[n];
