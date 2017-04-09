@@ -16,6 +16,9 @@ public class MatchManager : MonoBehaviour
     [SerializeField]
     float gap;
     private float expandSmiley = 0.2f;
+    [SerializeField]
+    private AudioClip sfxMatch;
+    private AudioSource audioSource;
 
     Smiley[,] smileys = new Smiley[rows, columns];
 
@@ -24,8 +27,9 @@ public class MatchManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         gameRunning = false;
-		mm = MobaManager.instance;
+        mm = MobaManager.instance;
         GenerateSmileysPool();
         ShufflePool();
         FillMap();
@@ -233,6 +237,11 @@ public class MatchManager : MonoBehaviour
 	//counting twice when hiting 4 blocks, but still make a good score
 	void UpdatePower (int counter)
 	{
+        Debug.Log("mylog ->\n");
+        Debug.Log(sfxMatch);
+        Debug.Log(audioSource);
+        audioSource.PlayOneShot(sfxMatch);
+        //audioSource.Play();
         if (gameRunning){
             Debug.Log ("Counter:" + counter);
             mm.addPower (20 * counter);
