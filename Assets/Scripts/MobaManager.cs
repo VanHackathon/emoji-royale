@@ -21,6 +21,7 @@ public class MobaManager : MonoBehaviour {
 	private int enemyHealth = 400;
 	public Text powerLbl;
 	public Text enemyHpLbl;
+	public Text playerHpLbl;
 
 	private gameStatus currentState = gameStatus.play;
 
@@ -33,6 +34,7 @@ public class MobaManager : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 		powerLbl.text = power.ToString ();
 		enemyHpLbl.text = enemyHealth.ToString ();
+		playerHpLbl.text = playerHpLbl.ToString ();
 	}
 	// Use this for initialization
 	void Start () {
@@ -96,6 +98,7 @@ public class MobaManager : MonoBehaviour {
 	public void doDamageToPlayer(int damage)
 	{
 		playerHealth = playerHealth - damage;
+		playerHpLbl.text = playerHealth.ToString ();
 		Debug.Log ("playerHealth:" + playerHealth);
 		if (playerHealth <= 0) {
 			Debug.Log ("Game Over - You Lost");

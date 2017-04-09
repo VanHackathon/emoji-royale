@@ -27,11 +27,20 @@ public class Monster : MonoBehaviour {
 				MobaManager.instance.doDamageToEnemy (attack);
 				Destroy(gameObject);
 			}
+			if (other.tag == MobaManager.TAG_ENEMY) {
+				Destroy(other.gameObject);
+				Destroy(gameObject);
+			}
+
 		}
 		else if (gameObject.tag == MobaManager.TAG_ENEMY) {
 			if (other.name == "PlayerCastle") {
 				Debug.Log ("Player Castle Dmg: " + attack);
 				MobaManager.instance.doDamageToPlayer (attack);
+				Destroy(gameObject);
+			}
+			if (other.tag == MobaManager.TAG_PLAYER) {
+				Destroy(other.gameObject);
 				Destroy(gameObject);
 			}
 		}
