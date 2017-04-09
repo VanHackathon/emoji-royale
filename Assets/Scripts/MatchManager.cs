@@ -31,7 +31,7 @@ public class MatchManager : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
 			GameObject collidedGO = hit.collider.gameObject;
-			if (hit && collidedGO && collidedGO.gameObject.activeSelf && collidedGO != smiley1){
+			if (hit && collidedGO && collidedGO != smiley1){
 				smiley2 = collidedGO;
 				smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
 				Vector2 tempPos = smiley1.transform.position;
@@ -65,7 +65,7 @@ public class MatchManager : MonoBehaviour {
 
 				CheckCollision();
 			}
-			else if (hit && hit.collider.gameObject.activeSelf){	//same smiley
+			else if (hit && hit.collider.gameObject){	//same smiley
 				smiley1.transform.localScale -= new Vector3(expandSmiley, expandSmiley, 0);
 				smiley1 = null;
 			}
@@ -73,7 +73,7 @@ public class MatchManager : MonoBehaviour {
 		else if (Input.GetMouseButtonDown(0)){
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
-			if (hit && hit.collider.gameObject.activeSelf){
+			if (hit && hit.collider.gameObject){
 				smiley1 = hit.collider.gameObject;
 				smiley1.transform.localScale += new Vector3(expandSmiley, expandSmiley, 0);
 			}
@@ -122,17 +122,19 @@ public class MatchManager : MonoBehaviour {
 	}
 
 	void CheckCollision(){
+		bool hasCollision = false;
 		//checking rows
 		for (int r = 0; r < rows; r++){
 			int counter = 1;
 			for (int c = 1; c < columns; c++){
 				Smiley s1 = smileys[r, c], s2 = smileys[r, c-1]; 
-				if (s1 != null && s2 != null && s1.gameObject.activeSelf && s2.gameObject.activeSelf && s1.name == s2.name)
+				if (s1 != null && s2 != null && s1.name == s2.name)
 					counter++;
 				else
 					counter = 1;
 
 				if (counter >= 3){
+					hasCollision = true;
 					s1.gameObject.SetActive(false);
 					s2.gameObject.SetActive(false);
 					smileys[r, c-2].gameObject.SetActive(false);
@@ -151,11 +153,52 @@ public class MatchManager : MonoBehaviour {
 					counter = 1;
 
 				if (counter >= 3){
+					hasCollision = true;
 					s1.gameObject.SetActive(false);
 					s2.gameObject.SetActive(false);
 					smileys[r-2, c].gameObject.SetActive(false);
 				}
 			}
 		}
+
+		//moving all non active smileys to the puta que pariu
+		for (int r = 0; r < rows; r++)
+			for (int c = 0; c < columns; c++)
+				if (!smileys[r, c].gameObject.activeSelf){
+					smileys[r, c].gameObject.transform.position = new Vector3(-10, -10, 0);
+					smileys[r, c] = null;
+				}
+
+		// if (hasCollision)
+			// MoveSmileys();
+	}
+
+	void MoveSmileys(){
+		bool anyMoved = false;
+		ShufflePool();
+		for (int r = 1; r < rows; r++)
+			for (int c = 0; c < columns; c++){
+				if (r == rows - 1 && smileys[r, c] == null){
+					Vector2 smileyPos = new Vector2(r, c);
+					for (int n = 0; n < smileyPool.Count; n++){
+						GameObject o = smileyPool[n];
+						if (!o.activeSelf){
+							o.transform.position = smileyPos;
+							o.SetActive(true);
+							smileys[r, c] = new Smiley(o, o.name);
+							break;
+						}
+					}
+				}
+				if (smileys[r, c] != null){
+					smileys[r, c-1] = smileys[r, c];
+					smileys[r, c-1].gameObject.transform.position = new Vector3(r, c-1, 0);
+					smileys[c, r] = null;
+					anyMoved = true;
+				}
+			}
+		
+		if (anyMoved)
+			Invoke("MoveSmileys", 0.5f);
 	}
 }
