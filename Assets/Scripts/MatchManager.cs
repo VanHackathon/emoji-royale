@@ -18,9 +18,12 @@ public class MatchManager : MonoBehaviour
 
     Smiley[,] smileys = new Smiley[rows, columns];
 
+	private MobaManager mm;
+
     // Use this for initialization
     void Start()
     {
+		mm = MobaManager.instance;
         GenerateSmileysPool();
         ShufflePool();
         FillMap();
@@ -32,8 +35,12 @@ public class MatchManager : MonoBehaviour
     {
         if (smiley1 && Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			//Debug.DrawRay (ray.origin, ray.direction, Color.green);
+            //RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
+			RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+			Debug.Log ("Worldpoint:" + worldPoint);
             if (hit)
             {
                 if (hit.collider == null)
@@ -85,8 +92,12 @@ public class MatchManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
+			//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			//Debug.DrawRay (ray.origin, ray.direction, Color.green);
+			//RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 1000);
+			RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+			Debug.Log ("Worldpoint:" + worldPoint);
             if (hit)
             {
                 GameObject collidedGO = hit.collider.gameObject;
@@ -171,8 +182,10 @@ public class MatchManager : MonoBehaviour
                     s1.gameObject.SetActive(false);
                     s2.gameObject.SetActive(false);
                     smileys[r, c - 2].gameObject.SetActive(false);
+					UpdatePower (counter);
                 }
             }
+
         }
 
         //checking columns
@@ -193,8 +206,12 @@ public class MatchManager : MonoBehaviour
                     s1.gameObject.SetActive(false);
                     s2.gameObject.SetActive(false);
                     smileys[r - 2, c].gameObject.SetActive(false);
+					UpdatePower (counter);
+
                 }
             }
+
+
         }
 
         //moving all non active smileys to the puta que pariu
@@ -206,9 +223,16 @@ public class MatchManager : MonoBehaviour
                     smileys[r, c] = null;
                 }
 
-        if (hasCollision)
+		if (hasCollision)
             MoveSmileys();
     }
+
+	//counting twice when hiting 4 blocks, but still make a good score
+	void UpdatePower (int counter)
+	{
+		Debug.Log ("Counter:" + counter);
+		mm.addPower (20 * counter);
+	}
 
     void MoveSmileys()
     {
