@@ -6,18 +6,22 @@ using UnityEngine.UI;
 public class EndSceneConfig : MonoBehaviour {
 
 	private GameStats gs;
-	public Text resultLbl;
+	//public Text resultLbl;
 	public Text monstersKilledLbl;
 	public Text timeLbl;
 	public Text totalPowerLbl;
+	public GameObject win;
+	public GameObject lose;
 
 	// Use this for initialization
 	void Start () {
 		gs = GameStats.instance;
 		if (gs.result == gameStatus.win) {
-			resultLbl.text = "YOU WIN!";
+			//resultLbl.text = "YOU WIN!";
+			win.SetActive(true);
 		} else {
-			resultLbl.text = "YOU LOSE!";
+			//resultLbl.text = "YOU LOSE!";
+			lose.SetActive(true);
 		}
 
 		monstersKilledLbl.text = "Monsters Killed: "+gs.monstersKilled.ToString ();

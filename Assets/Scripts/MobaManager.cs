@@ -17,8 +17,8 @@ public class MobaManager : MonoBehaviour {
 	public GameObject[] monsters;
 	private int power = 500;
 	public int enemyPower = 350;
-	private int playerHealth = 1000;
-	private int enemyHealth = 1000;
+	private int playerHealth = 100;
+	private int enemyHealth = 100;
 	private GameObject powerLbl;
 	private GameObject enemyHpLbl;
 	private GameObject playerHpLbl;
