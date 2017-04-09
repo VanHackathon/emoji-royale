@@ -46,14 +46,14 @@ public class MatchManager : MonoBehaviour {
 				int r1 = 0, c1 = 0;
 				for (int r = 0; r < rows; r++)
 					for (int c = 0; c < columns; c++)
-						if (smileys[r, c].gameObject == smiley1){
+						if (smileys[r, c] != null && smileys[r, c].gameObject == smiley1){
 							r1 = r;
 							c1 = c;
 						}
 
 				for (int r = 0; r < rows; r++)
 					for (int c = 0; c < columns; c++)
-						if (smileys[r, c].gameObject == smiley2){
+						if (smileys[r, c] != null && smileys[r, c].gameObject == smiley2){
 							Smiley s = smileys[r1, c1];
 							smileys[r1, c1] = smileys[r, c];
 							smileys[r, c] = s;
