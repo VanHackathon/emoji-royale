@@ -133,7 +133,7 @@ public class MatchManager : MonoBehaviour
                 smileyPool.Add(o);
             }
         }
-        ShufflePool();
+        //ShufflePool();
     }
 
     void ShufflePool()
