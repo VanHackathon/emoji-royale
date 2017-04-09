@@ -24,7 +24,10 @@ public class MobaManager : MonoBehaviour {
 	private GameObject playerHpLbl;
 
 	public gameStatus currentState = gameStatus.play;
+	public int monstersKilled = 0;
 
+	public float timer = 0;
+	public int totalPower = 0;
 
 	void Awake(){
 		if (instance == null)
@@ -47,7 +50,7 @@ public class MobaManager : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
-		
+		timer += Time.deltaTime;
 	}
 
 	public void spawnPlayerMonster(int index)
@@ -90,6 +93,7 @@ public class MobaManager : MonoBehaviour {
 
 	public void addPower(int amount)
 	{
+		totalPower = totalPower + amount;
 		power = power + amount;
 		powerLbl.GetComponent<Text>().text = power.ToString ();
 	}
@@ -127,12 +131,18 @@ public class MobaManager : MonoBehaviour {
 		}
 	}
 
+	public void addMonsterKilled()
+	{
+		monstersKilled = monstersKilled + 1;
+	}
+
 	public void updateGameStatus()
 	{
 		GameStats.instance.result = currentState;
-		//GameStats.instance.monstersKilled = 0;
-		//GameStats.instance.timePlayedInSec = 0;
-		//GameStats.instance.totalPower = 0;
+		GameStats.instance.monstersKilled = monstersKilled;
+		Debug.Log ("Timer:" + (int) timer);
+		GameStats.instance.timePlayedInSec = (int) timer;
+		GameStats.instance.totalPower = totalPower;
 	}
 
 }

@@ -6,11 +6,11 @@ using UnityEngine.Advertisements;
 public class ChangeLevel : MonoBehaviour {
 
 	void Start(){
-		Advertisement.Initialize ("1378778", true);
+		//Advertisement.Initialize ("1378778", true);
 	}
 	public void changeLevel(string level)
 	{
-		StartCoroutine (ShowAdWhenReady());
+		///StartCoroutine (ShowAdWhenReady());
 		Application.LoadLevel(level);
 	}
 
