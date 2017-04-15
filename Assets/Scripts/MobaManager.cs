@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum gameStatus {
 	play,gameover,win
@@ -120,7 +121,7 @@ public class MobaManager : MonoBehaviour {
 			Debug.Log ("Game Over - You Lost");
 			currentState = gameStatus.gameover;
 			updateGameStatus ();
-			Application.LoadLevel ("EndGame");
+			SceneManager.LoadScene("EndGame");
 		}
 	}
 
@@ -134,7 +135,7 @@ public class MobaManager : MonoBehaviour {
 			currentState = gameStatus.win;
 			updateGameStatus ();
 			
-			Application.LoadLevel ("EndGame");
+			SceneManager.LoadScene("EndGame");
 		}
 	}
 
