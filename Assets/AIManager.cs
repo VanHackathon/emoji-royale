@@ -26,7 +26,7 @@ public class AIManager : MonoBehaviour{
     public void enemyCash()
     {
         //if (counter > timelimit)
-        if (counter > Random.Range(2, 6))
+        if (counter > Random.Range(1, 4))
         {
             counter = 0;
             multiplier++;
