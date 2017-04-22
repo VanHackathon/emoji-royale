@@ -29,7 +29,7 @@ public class AIManager : MonoBehaviour{
             counter = 0;
             multiplier++;
         }
-        moba.enemyPower = moba.enemyPower + multiplier;
+        moba.enemyPower = moba.enemyPower + (multiplier * Random.Range(1, 2));
         counter++;
     }
     // Update is called once per frame
