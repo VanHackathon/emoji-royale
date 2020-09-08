@@ -1,5 +1,7 @@
 # Emoji Royale
 
+Trailer: https://www.youtube.com/watch?v=glHHTyCiBeE
+
 # Technologies
 
 - Adobe Photoshop
